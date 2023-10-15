@@ -9,6 +9,9 @@ def get_index():
 @route("/list")
 def get_list():
     rows = database.get_items()
+    for item in rows:
+        print(str(item['_id']))
+
     return template("list.tpl", shopping_list=rows)
 
 @route("/add")
@@ -37,7 +40,7 @@ def get_update(id):
 @post("/update")
 def post_update():
     description = request.forms.get("description")
-    id = request.forms.get("id")
+    id = request.forms.get("_id")
     database.update_item(id, description)
     redirect("/list")
 
