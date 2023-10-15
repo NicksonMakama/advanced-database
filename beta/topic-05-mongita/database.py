@@ -19,9 +19,9 @@ def get_items(id=None):
             item['id'] = str(item['_id'])
     else:
         try:
-            
+            id = ObjectId(id)
             items = list(item_collection.find({"_id":id}))
-            items['id'] = str(items['_id'])
+            #items['id'] = str(items['_id'])
             # items = [
             #     { 
             #         "id" : item.id,
@@ -29,6 +29,9 @@ def get_items(id=None):
             #     }
             #     for item in items
             # ]
+            for item in items:
+                item['id'] = str(item['_id'])
+
         except Exception as e:
             print(e)
     return items
@@ -43,8 +46,8 @@ def delete_item(id):
     item_collection = db.item_collection
     #item = Item.select().where(Item.id == id).get()
     
-    delId = str(id)
-    item_collection.delete_one({"_id":delId})
+    id = ObjectId(id)
+    item_collection.delete_one({"_id":id})
 
    
 def update_item(id, description):
@@ -52,6 +55,7 @@ def update_item(id, description):
     # item.description = description
     # item.save()
     #Item.update({Item.description: description}).where(Item.id == id).execute()
+    id = ObjectId(id)
     item_collection = db.item_collection
     item_collection.update_one({'_id':id},{'$set':{'description':description}})
 
